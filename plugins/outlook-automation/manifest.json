@@ -1,0 +1,14 @@
+{
+  "name": "outlook-automation",
+  "version": "1.0.0",
+  "description": "Control Microsoft Outlook on Windows via COM automation - create meetings, send emails, search inbox, manage calendar events",
+  "author": "tamirdresher",
+  "platforms": ["copilot-cli", "claude", "chatgpt", "any-agent"],
+  "triggers": ["create meeting", "send email", "search emails", "check inbox", "calendar", "schedule", "outlook", "appointment"],
+  "requires": {
+    "os": "windows",
+    "software": ["Microsoft Outlook (installed and configured)"],
+    "runtime": "PowerShell"
+  },
+  "tags": ["productivity", "email", "calendar", "outlook", "windows", "COM-automation"]
+}
