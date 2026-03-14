@@ -1,0 +1,12 @@
+{
+  "name": "github-project-board",
+  "version": "1.0.0",
+  "description": "Manage GitHub Projects V2 board state synchronization with issue lifecycle transitions",
+  "platforms": ["copilot", "claude", "squad", "any"],
+  "triggers": ["project board", "move issue", "board status", "kanban", "issue lifecycle"],
+  "author": "Tamir Dresher",
+  "license": "MIT",
+  "files": {
+    "skill": "SKILL.md"
+  }
+}

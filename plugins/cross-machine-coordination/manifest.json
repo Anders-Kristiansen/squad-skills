@@ -1,0 +1,12 @@
+{
+  "name": "cross-machine-coordination",
+  "version": "1.0.0",
+  "description": "Git-based task queuing for multi-machine agent coordination with schema validation and sandboxed execution",
+  "platforms": ["copilot", "claude", "squad", "any"],
+  "triggers": ["cross machine", "multi machine", "remote task", "machine coordination", "distribute work"],
+  "author": "Tamir Dresher",
+  "license": "MIT",
+  "files": {
+    "skill": "SKILL.md"
+  }
+}

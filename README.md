@@ -1,37 +1,156 @@
-# 🧩 Squad Skills Marketplace
+# 🧩 Squad Skills — AI Plugin Marketplace
 
-Reusable skills for [GitHub Copilot Squad](https://github.com/bradygaster/squad) — drop-in automation modules that AI agents can discover and use.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Plugins](https://img.shields.io/badge/Plugins-5-green.svg)](#-available-plugins)
+[![Platform](https://img.shields.io/badge/Works%20With-Any%20AI%20Agent-purple.svg)](#-installation)
 
-## Available Skills
+**Reusable knowledge plugins for AI agents.** Think of it as *npm for AI agent skills* — structured knowledge modules that any AI system can consume to learn new capabilities.
 
-| Skill | Description | Status |
-|-------|-------------|--------|
-| [teams-ui-automation](skills/teams-ui-automation/) | Hybrid Teams automation — Playwright + keyboard shortcuts + window management | ✅ Verified |
-| [teams-monitor](skills/teams-monitor/) | Monitor Microsoft Teams channels via WorkIQ for actionable messages and bridge them into GitHub issues | ✅ Production |
-| [cross-machine-coordination](skills/cross-machine-coordination/) | Git-based task queuing for multi-machine agent coordination with schema validation and sandboxed execution | ✅ Production |
-| [github-project-board](skills/github-project-board/) | Manage GitHub Projects V2 board state synchronization with issue lifecycle | ✅ Production |
-| [github-distributed-coordination](skills/github-distributed-coordination/) | GitHub-native distributed work claiming protocol for multi-machine agents using atomic comments and labels | ✅ Production |
+> 🎯 **Not locked to any framework.** These plugins work with GitHub Copilot, Claude, ChatGPT, Squad, or any LLM-based agent. A plugin is just a well-structured markdown file that teaches an AI agent how to do something.
 
-## How to Use
+---
 
-Copy any skill folder into your project's `.squad/skills/` directory:
+## 💡 What Is This?
+
+AI agents are powerful, but they don't know everything out of the box. This marketplace provides **drop-in knowledge plugins** — each one teaches your AI agent a specific skill:
+
+- 🖥️ **Automate Microsoft Teams** UI when the Graph API isn't enough
+- 📡 **Bridge Teams messages** into GitHub issues automatically
+- 🔄 **Coordinate work** across machines using Git as a task queue
+- 📋 **Manage project boards** with proper lifecycle transitions
+- 🤝 **Distribute tasks** across agents without conflicts
+
+Each plugin is a self-contained `SKILL.md` — structured markdown that any AI agent can read and act on. No SDKs, no dependencies, no lock-in.
+
+---
+
+## 📦 Available Plugins
+
+| Plugin | Description | Triggers |
+|--------|-------------|----------|
+| [🖥️ teams-ui-automation](plugins/teams-ui-automation/) | Hybrid Teams automation — Playwright + keyboard shortcuts + UIA | `teams ui`, `install teams app`, `teams automation` |
+| [📡 teams-monitor](plugins/teams-monitor/) | Monitor Teams channels via WorkIQ and bridge messages to GitHub issues | `check teams`, `teams monitor` |
+| [🔄 cross-machine-coordination](plugins/cross-machine-coordination/) | Git-based task queuing for multi-machine agent coordination | `cross machine`, `remote task`, `distribute work` |
+| [📋 github-project-board](plugins/github-project-board/) | GitHub Projects V2 board sync with issue lifecycle | `project board`, `move issue`, `board status` |
+| [🤝 github-distributed-coordination](plugins/github-distributed-coordination/) | Distributed work claiming protocol using GitHub-native features | `distributed coordination`, `work claiming` |
+
+---
+
+## 🚀 Installation
+
+Every plugin's core is a single file: **`SKILL.md`**. How you feed it to your AI agent depends on the platform.
+
+### GitHub Copilot
+
+Copy the `SKILL.md` content into your repo's Copilot instructions:
 
 ```bash
-# Example: add Teams UI Automation to your squad
-cp -r skills/teams-ui-automation /path/to/your/repo/.squad/skills/
+# Option A: Add to repository-level instructions
+cat plugins/teams-ui-automation/SKILL.md >> .github/copilot-instructions.md
+
+# Option B: Create a custom Copilot agent (Copilot Chat)
+# Copy SKILL.md content into a .github/copilot-agents/teams-automation.md file
 ```
 
-Your squad agents will automatically discover and use skills from `.squad/skills/`.
+### Claude Projects
 
-## Contributing
+1. Open your Claude Project settings
+2. Go to **Project Knowledge**
+3. Paste the contents of `SKILL.md` as a knowledge document
+4. Claude will now use this knowledge in conversations within that project
 
-Have a useful automation pattern? Add it as a skill:
+### Squad (GitHub Copilot Squad)
 
-1. Create a folder under `skills/{skill-name}/`
-2. Add a `SKILL.md` with triggers, recipes, and usage patterns
-3. Add any supporting scripts
-4. Open a PR
+```bash
+# Copy the entire plugin folder
+cp -r plugins/teams-ui-automation /path/to/your/repo/.squad/skills/
 
-## License
+# Squad agents auto-discover skills from .squad/skills/
+```
 
-MIT
+### ChatGPT / Custom GPTs
+
+1. Go to **Configure** → **Knowledge**
+2. Upload the `SKILL.md` file
+3. The GPT will reference this knowledge when relevant triggers match
+
+### Any Other Agent
+
+Just read the `SKILL.md` file. That's it. It's structured markdown with:
+- **YAML frontmatter** — metadata, triggers, confidence level
+- **Recipes** — step-by-step procedures the agent can follow
+- **Error recovery** — what to do when things go wrong
+- **Anti-patterns** — common mistakes to avoid
+
+```python
+# Example: Load a plugin in your custom agent
+with open("plugins/teams-ui-automation/SKILL.md") as f:
+    skill_knowledge = f.read()
+
+# Add to your agent's system prompt or context
+agent.add_context(skill_knowledge)
+```
+
+---
+
+## 📁 Plugin Structure
+
+Each plugin follows a consistent structure:
+
+```
+plugins/
+  your-plugin/
+    manifest.json     # 📋 Machine-readable metadata
+    SKILL.md          # 🤖 Agent-consumable knowledge (the core)
+    README.md         # 📖 Human-readable documentation
+    scripts/          # 🔧 Supporting scripts (optional)
+```
+
+### Manifest Format
+
+Every plugin includes a `manifest.json` for tooling and discovery:
+
+```json
+{
+  "name": "your-plugin-name",
+  "version": "1.0.0",
+  "description": "What it does in one line",
+  "platforms": ["copilot", "claude", "squad", "any"],
+  "triggers": ["keyword1", "related phrase"],
+  "author": "Your Name",
+  "license": "MIT",
+  "files": {
+    "skill": "SKILL.md",
+    "scripts": ["scripts/helper.ps1"]
+  }
+}
+```
+
+---
+
+## 🤝 Contributing
+
+We'd love your plugins! If you've built an automation pattern that works well with AI agents, share it.
+
+**Quick start:**
+
+1. Fork this repo
+2. Create `plugins/your-plugin-name/` with `manifest.json`, `SKILL.md`, and `README.md`
+3. Open a PR
+
+📖 See the full [Contributing Guide](.github/CONTRIBUTING.md) for templates, best practices, and quality guidelines.
+
+---
+
+## 🧠 Philosophy
+
+- **Knowledge, not code.** Plugins are structured documentation, not libraries. They teach agents *how* to do things, not *what* to execute.
+- **Platform-agnostic.** If it can read markdown, it can use these plugins.
+- **Self-contained.** Each plugin has everything an agent needs — context, recipes, error recovery, and anti-patterns.
+- **Community-driven.** The best automation patterns come from real-world use.
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) — use these plugins however you want.

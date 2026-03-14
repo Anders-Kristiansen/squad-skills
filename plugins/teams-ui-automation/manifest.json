@@ -1,0 +1,13 @@
+{
+  "name": "teams-ui-automation",
+  "version": "1.0.0",
+  "description": "Hybrid Teams automation via Playwright + keyboard shortcuts + UIA for operations not available through Graph API",
+  "platforms": ["copilot", "claude", "squad", "any"],
+  "triggers": ["teams ui", "install teams app", "add teams tab", "teams connector", "teams desktop", "teams automation", "ui automation teams", "teams playwright"],
+  "author": "Tamir Dresher",
+  "license": "MIT",
+  "files": {
+    "skill": "SKILL.md",
+    "scripts": ["scripts/Teams-UIA.ps1"]
+  }
+}
