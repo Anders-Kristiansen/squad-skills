@@ -1,7 +1,7 @@
 # 🧩 Squad Skills — AI Plugin Marketplace
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Plugins](https://img.shields.io/badge/Plugins-6-green.svg)](#-available-plugins)
+[![Plugins](https://img.shields.io/badge/Plugins-9-green.svg)](#-available-plugins)
 [![Platform](https://img.shields.io/badge/Works%20With-Any%20AI%20Agent-purple.svg)](#-installation)
 
 **Reusable knowledge plugins for AI agents.** Think of it as *npm for AI agent skills* — structured knowledge modules that any AI system can consume to learn new capabilities.
@@ -34,6 +34,9 @@ Each plugin is a self-contained `SKILL.md` — structured markdown that any AI a
 | [📋 github-project-board](plugins/github-project-board/) | GitHub Projects V2 board sync with issue lifecycle | `project board`, `move issue`, `board status` |
 | [🤝 github-distributed-coordination](plugins/github-distributed-coordination/) | Distributed work claiming protocol using GitHub-native features | `distributed coordination`, `work claiming` |
 | [📧 outlook-automation](plugins/outlook-automation/) | Control Outlook on Windows — send emails, create meetings, search inbox, manage tasks | `create meeting`, `send email`, `search emails`, `outlook` |
+| [📰 news-broadcasting](plugins/news-broadcasting/) | Tech news scanning, compilation, and delivery to team channels | `news`, `tech news`, `daily briefing`, `news report`, `scan news` |
+| [✅ fact-checking](plugins/fact-checking/) | Agent fact-verification patterns for ensuring accuracy before publishing | `fact check`, `verify`, `validate claims`, `source check` |
+| [🔄 reflect](plugins/reflect/) | Agent self-reflection and continuous improvement patterns | `reflect`, `retrospective`, `self-improve`, `lessons learned`, `what went wrong` |
 
 ---
 

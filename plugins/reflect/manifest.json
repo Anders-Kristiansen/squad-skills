@@ -1,0 +1,17 @@
+{
+  "name": "reflect",
+  "version": "1.0.0",
+  "description": "Agent self-reflection and continuous improvement patterns",
+  "author": "tamirdresher",
+  "license": "MIT",
+  "platforms": ["github-copilot", "claude", "chatgpt", "any-llm"],
+  "triggers": ["reflect", "retrospective", "self-improve", "lessons learned", "what went wrong"],
+  "tags": ["learning", "improvement", "reflection", "continuous-improvement"],
+  "capabilities": [
+    "Capture high/med/low confidence learnings from conversations",
+    "Extract patterns from user corrections and praise",
+    "Identify edge cases and scenarios",
+    "Propose improvements to agent knowledge bases",
+    "Generate structured reflection reports"
+  ]
+}

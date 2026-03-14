@@ -1,0 +1,16 @@
+{
+  "name": "news-broadcasting",
+  "version": "1.0.0",
+  "description": "Tech news scanning, compilation, and delivery to team channels",
+  "author": "tamirdresher",
+  "license": "MIT",
+  "platforms": ["github-copilot", "claude", "chatgpt", "any-llm"],
+  "triggers": ["news", "tech news", "daily briefing", "news report", "scan news"],
+  "tags": ["communication", "reporting", "automation", "teams"],
+  "capabilities": [
+    "Compile tech news from multiple sources",
+    "Format news for team channel delivery",
+    "Apply consistent styling and branding",
+    "Deliver to webhook-based messaging systems"
+  ]
+}

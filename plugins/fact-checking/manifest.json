@@ -1,0 +1,17 @@
+{
+  "name": "fact-checking",
+  "version": "1.0.0",
+  "description": "Agent fact-verification patterns for ensuring accuracy before publishing",
+  "author": "tamirdresher",
+  "license": "MIT",
+  "platforms": ["github-copilot", "claude", "chatgpt", "any-llm"],
+  "triggers": ["fact check", "verify", "validate claims", "source check"],
+  "tags": ["quality", "verification", "review", "accuracy"],
+  "capabilities": [
+    "Verify claims against available data",
+    "Test counter-hypotheses systematically",
+    "Validate external references (URLs, APIs, packages)",
+    "Generate structured review reports",
+    "Flag confidence levels for findings"
+  ]
+}
