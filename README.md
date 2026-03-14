@@ -7,6 +7,10 @@ Reusable skills for [GitHub Copilot Squad](https://github.com/bradygaster/squad)
 | Skill | Description | Status |
 |-------|-------------|--------|
 | [teams-ui-automation](skills/teams-ui-automation/) | Hybrid Teams automation — Playwright + keyboard shortcuts + window management | ✅ Verified |
+| [teams-monitor](skills/teams-monitor/) | Monitor Microsoft Teams channels via WorkIQ for actionable messages and bridge them into GitHub issues | ✅ Production |
+| [cross-machine-coordination](skills/cross-machine-coordination/) | Git-based task queuing for multi-machine agent coordination with schema validation and sandboxed execution | ✅ Production |
+| [github-project-board](skills/github-project-board/) | Manage GitHub Projects V2 board state synchronization with issue lifecycle | ✅ Production |
+| [github-distributed-coordination](skills/github-distributed-coordination/) | GitHub-native distributed work claiming protocol for multi-machine agents using atomic comments and labels | ✅ Production |
 
 ## How to Use
 
