@@ -1,56 +1,88 @@
 ---
 name: github-multi-account
-description: Use account-locked gh aliases (gh-personal/ghp, gh-work/ghw) for multi-account GitHub operations. NEVER use bare gh + gh auth switch.
+description: Detect and set up account-locked gh aliases for multi-account GitHub. The AI reads this skill, detects accounts, asks the user which is personal/work, and runs the setup automatically.
 confidence: high
 ---
 
-# GitHub Multi-Account — MANDATORY PATTERN
+# GitHub Multi-Account — AI-Driven Setup
 
-## Problem
-Multiple GitHub accounts (personal + work/EMU) cause constant failures when agents use bare `gh` commands with manual `gh auth switch`.
+## When to Activate
+When the user has multiple GitHub accounts (check with `gh auth status`). If you see 2+ accounts listed, this skill applies.
 
-## Solution — Account-Locked Aliases
+## What to Do (as the AI agent)
 
-Define these in every session or PowerShell profile:
+### Step 1: Detect accounts
+Run: `gh auth status`
+Look for multiple accounts. Note which usernames are listed.
 
-```powershell
-function gh-personal { gh auth switch --user YOUR_PERSONAL 2>$null | Out-Null; gh @args }
-function gh-work { gh auth switch --user YOUR_WORK 2>$null | Out-Null; gh @args }
-```
+### Step 2: Ask the user
+Ask: "I see you have multiple GitHub accounts: {list them}. Which one is your personal account and which is your work/EMU account?"
 
-## Rules
-
-1. **NEVER** use bare `gh` for repo operations — always use `gh-personal` or `gh-work`
-2. **NEVER** manually run `gh auth switch` — the aliases handle it
-3. Determine which alias by the repo owner:
-   - Personal account repos → `gh-personal` / `ghp`
-   - Work/EMU account repos → `gh-work` / `ghw`
-4. For account-agnostic operations (`gh auth status`), bare `gh` is OK
-
-## Examples
+### Step 3: Run the setup automatically
+Once the user confirms, do ALL of this for them:
 
 ```powershell
-# Work/EMU operations
-gh-work issue list
-gh-work pr create --title "fix bug" --body "..."
-gh-work repo view my-org/my-repo
+# 1. Define the functions
+$personal = "THEIR_PERSONAL_USERNAME"
+$work = "THEIR_WORK_USERNAME"
 
-# Personal operations
-gh-personal repo list
-gh-personal issue create --repo myuser/my-project --title "new feature"
+# 2. Add to PowerShell profile
+$profilePath = $PROFILE.CurrentUserAllHosts
+if (!(Test-Path $profilePath)) { New-Item -Path $profilePath -Force | Out-Null }
+$existing = Get-Content $profilePath -Raw -ErrorAction SilentlyContinue
+if ($existing -notmatch "gh-personal") {
+    $block = @"
 
-# Cross-account in one script — SAFE
-gh-work issue list --json number,title    # work context
-gh-personal repo list --json name         # personal context — no conflict!
+# === GitHub Multi-Account Aliases ===
+function gh-personal { gh auth switch --user $personal 2>`$null | Out-Null; gh @args }
+function gh-work { gh auth switch --user $work 2>`$null | Out-Null; gh @args }
+Set-Alias ghp gh-personal
+Set-Alias ghw gh-work
+"@
+    Add-Content -Path $profilePath -Value $block
+}
+
+# 3. Create CMD wrappers
+$binDir = Join-Path $env:USERPROFILE ".squad\bin"
+if (!(Test-Path $binDir)) { New-Item -ItemType Directory -Path $binDir -Force | Out-Null }
+"@echo off`ngh auth switch --user $personal >nul 2>&1`ngh %*" | Out-File "$binDir\ghp.cmd" -Encoding ascii
+"@echo off`ngh auth switch --user $work >nul 2>&1`ngh %*" | Out-File "$binDir\ghw.cmd" -Encoding ascii
+
+# 4. Add to PATH
+$userPath = [Environment]::GetEnvironmentVariable("PATH", "User")
+if ($userPath -notmatch [regex]::Escape($binDir)) {
+    [Environment]::SetEnvironmentVariable("PATH", "$binDir;$userPath", "User")
+    $env:PATH = "$binDir;$env:PATH"
+}
+
+# 5. Load in current session
+function gh-personal { gh auth switch --user $personal 2>$null | Out-Null; gh @args }
+function gh-work { gh auth switch --user $work 2>$null | Out-Null; gh @args }
+Set-Alias ghp gh-personal
+Set-Alias ghw gh-work
 ```
 
-## Setup for Agents
-
-At the TOP of any script that uses GitHub CLI, define the functions:
-
+### Step 4: Verify for the user
+Run these and show the results:
 ```powershell
-function gh-personal { gh auth switch --user YOUR_PERSONAL 2>$null | Out-Null; gh @args }
-function gh-work { gh auth switch --user YOUR_WORK 2>$null | Out-Null; gh @args }
+ghp api user --jq '.login'   # should show personal username
+ghw api user --jq '.login'   # should show work username
 ```
 
-Replace YOUR_PERSONAL and YOUR_WORK with actual GitHub usernames.
+### Step 5: Tell the user
+"All set! From now on use `ghp` for personal repos and `ghw` for work repos. I'll use them too."
+
+## After Setup — Usage Rules
+
+1. **NEVER** use bare `gh` for repo operations — always `ghp` or `ghw`
+2. **NEVER** manually `gh auth switch` — the aliases handle it
+3. Determine alias by repo owner:
+   - Personal account repos → `ghp` / `gh-personal`
+   - Work/EMU account repos → `ghw` / `gh-work`
+
+## For Squad Agents
+At the TOP of any script touching GitHub, define:
+```powershell
+function gh-personal { gh auth switch --user PERSONAL 2>$null | Out-Null; gh @args }
+function gh-work { gh auth switch --user WORK 2>$null | Out-Null; gh @args }
+```

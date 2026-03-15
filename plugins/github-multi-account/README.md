@@ -1,68 +1,36 @@
 # GitHub Multi-Account Management
 
-Stop the account-switching chaos. If you have multiple GitHub accounts (personal + work/EMU), this skill teaches AI agents to use account-locked aliases instead of fragile `gh auth switch` commands.
+AI-driven setup for multi-account GitHub CLI. No manual steps needed.
 
-## The Problem
+## How It Works
 
-AI agents constantly fail multi-account workflows:
-- Forget to switch accounts before operations
-- Switch to wrong account
-- Switch back too early, breaking subsequent commands
-- Create PRs/issues on wrong repos
+1. Add this plugin's `SKILL.md` to your `.squad/skills/github-multi-account/` directory
+2. Tell your AI: **"set up my GitHub multi-account aliases"**
+3. The AI detects your accounts, asks which is personal/work, and sets everything up automatically
 
-## The Solution
+That's it. The AI handles the PowerShell profile, CMD wrappers, PATH, and verification.
 
-Account-locked aliases that auto-switch context before every command:
+## What Gets Set Up
 
-```powershell
-# Define once (add to PowerShell profile)
-function gh-personal { gh auth switch --user YOUR_PERSONAL_ACCOUNT 2>$null | Out-Null; gh @args }
-function gh-work { gh auth switch --user YOUR_WORK_ACCOUNT 2>$null | Out-Null; gh @args }
-Set-Alias ghp gh-personal
-Set-Alias ghw gh-work
-```
+| Alias | Purpose |
+|-------|---------|
+| `ghp` / `gh-personal` | Always runs in your personal account context |
+| `ghw` / `gh-work` | Always runs in your work/EMU account context |
 
-Then NEVER use bare `gh` for repo operations again:
+No more `gh auth switch` chaos. Each alias locks its own account before every command.
+
+## Install the Skill
 
 ```powershell
-ghp repo list                    # always personal context
-ghw issue list                   # always work context
-ghp pr create --title "fix"      # personal, guaranteed
-ghw pr merge 42                  # work, guaranteed
+# In your repo with .squad/
+mkdir -p .squad/skills/github-multi-account
+curl -o .squad/skills/github-multi-account/SKILL.md https://raw.githubusercontent.com/tamirdresher/squad-skills/main/plugins/github-multi-account/SKILL.md
 ```
 
-## One-Line Setup
-
-```powershell
-# Replace with YOUR GitHub usernames:
-irm https://raw.githubusercontent.com/tamirdresher/squad-skills/main/plugins/github-multi-account/setup.ps1 -OutFile setup.ps1; pwsh setup.ps1 -Personal YOUR_PERSONAL -Work YOUR_WORK; rm setup.ps1
-```
-
-Or if you already cloned the repo:
-```powershell
-pwsh plugins/github-multi-account/setup.ps1 -Personal myuser -Work myuser_microsoft
-```
-
-This automatically:
-- Adds `ghp`/`ghw` functions to your PowerShell profile
-- Creates CMD wrappers in `~/.squad/bin/` (added to PATH)
-- Installs the SKILL.md to your repo's `.squad/skills/`
-- Loads everything in the current session
-
-## Manual Setup (if you prefer)
-
-1. Add the functions to your PowerShell profile (`$PROFILE.CurrentUserAllHosts`)
-2. Replace `YOUR_PERSONAL_ACCOUNT` and `YOUR_WORK_ACCOUNT` with your actual GitHub usernames
-3. For CMD/batch: create `gh-personal.cmd` and `gh-work.cmd` wrapper scripts
-4. Add `SKILL.md` to your agent's skill directory
-
-## For AI Agents
-
-Add `SKILL.md` to your `.squad/skills/github-multi-account/` directory. Every agent that touches GitHub will read this skill and use the correct alias automatically.
+Then just tell your AI to set it up. It reads the SKILL.md and knows what to do.
 
 ## Trigger Phrases
-
-- "wrong account", "auth switch", "EMU account"
-- "push to personal repo", "create issue on work repo"
-- Any GitHub operation targeting a specific account's repos
-
+- "set up my GitHub accounts"
+- "I have two GitHub accounts"
+- "fix my gh auth switching"
+- "wrong account" / "auth switch"
