@@ -883,7 +883,7 @@ Squad runs 24/7 via automated GitHub Actions workflows. These keep Ralph and oth
 
 Create .github/workflows/squad-heartbeat.yml:
 
-\\\yaml
+```yaml
 name: Squad Heartbeat
 on:
   schedule:
@@ -909,7 +909,7 @@ jobs:
         with:
           name: heartbeat-logs
           path: heartbeat-log.json
-\\\
+```
 
 **What happens:**
 - Every 10 minutes, GitHub Actions spins up a runner
@@ -930,7 +930,7 @@ If you need more, create a PAT in \.github/workflows/\ secrets with \epo\ + \wo
 
 Create \.github/workflows/squad-issue-assign.yml\:
 
-\\\yaml
+```yaml
 name: Assign Squad Member
 on:
   issues:
@@ -950,7 +950,7 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-\\\
+```
 
 **Better approach:** Use Squad's routing engine (in \squad.yml\) to auto-assign, or read \.squad/team.md\ and map labels to GitHub usernames.
 
@@ -958,7 +958,7 @@ jobs:
 
 Create \.github/workflows/squad-triage.yml\:
 
-\\\yaml
+```yaml
 name: Squad Triage
 on:
   issues:
@@ -977,7 +977,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           squad agent run picard --task "Triage issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
-\\\
+```
 
 Picard (the Lead) reads the issue title and body, then:
 - Decides if it's a bug, feature, or chore
@@ -988,7 +988,7 @@ Picard (the Lead) reads the issue title and body, then:
 
 Ensures all team member labels exist in the repo:
 
-\\\yaml
+```yaml
 name: Sync Squad Labels
 on:
   push:
@@ -1009,7 +1009,7 @@ jobs:
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-\\\
+```
 
 ### 5. Self-Hosted Runners (For EMU & Private Networks)
 
@@ -1017,7 +1017,7 @@ If your repo is in GitHub Enterprise Managed Users (EMU) or you need runners wit
 
 **On your local machine or DevBox:**
 
-\\\ash
+```ash
 # Download runner
 mkdir actions-runner && cd actions-runner
 curl -o actions-runner-linux-x64-2.311.0.tar.gz \
@@ -1030,17 +1030,17 @@ tar xzf ./actions-runner-linux-x64-2.311.0.tar.gz
 # Run as service (Linux/Mac)
 sudo ./svc.sh install
 sudo ./svc.sh start
-\\\
+```
 
 **In your workflow:**
 
-\\\yaml
+```yaml
 jobs:
   myJob:
     runs-on: self-hosted  # Or: [self-hosted, linux, x64]
     steps:
       # ... steps ...
-\\\
+```
 
 Self-hosted runners see your network, can access private APIs, and support GPU (if your machine has one).
 
@@ -1062,16 +1062,16 @@ For Squad to notify humans and read context, it needs to talk to Teams and Outlo
 
 **Store the webhook:**
 
-\\\ash
+```ash
 # Save to ~/.squad/teams-webhook.url or .squad/config.json
 mkdir -p ~/.squad
 echo "https://outlook.webhook.office.com/..." > ~/.squad/teams-webhook.url
 chmod 600 ~/.squad/teams-webhook.url
-\\\
+```
 
 Or in \.squad/config.json\:
 
-\\\json
+```json
 {
   "teams": {
     "webhook": "https://outlook.webhook.office.com/webhookb2/...",
@@ -1081,11 +1081,11 @@ Or in \.squad/config.json\:
     }
   }
 }
-\\\
+```
 
 **Sending notifications from Ralph:**
 
-\\\ash
+```ash
 # Webhook payload (Adaptive Card format)
 curl -X POST "https://outlook.webhook.office.com/..." \
   -H "Content-Type: application/json" \
@@ -1111,7 +1111,7 @@ curl -X POST "https://outlook.webhook.office.com/..." \
       ]
     }]
   }'
-\\\
+```
 
 ### 2. Teams MCP Server Integration
 
@@ -1119,7 +1119,7 @@ The **Teams MCP Server** allows Squad agents to read/write Teams programmaticall
 
 **In \.copilot/mcp-config.json\:**
 
-\\\json
+```json
 {
   "mcpServers": {
     "teams": {
@@ -1132,7 +1132,7 @@ The **Teams MCP Server** allows Squad agents to read/write Teams programmaticall
     }
   }
 }
-\\\
+```
 
 **Available tools:**
 - \	eams-ListChats\ — Find chats with a user
@@ -1144,17 +1144,17 @@ The **Teams MCP Server** allows Squad agents to read/write Teams programmaticall
 
 **Example: Ralph checks for urgent messages before triaging**
 
-\\\ash
+```ash
 squad agent run ralph --task "Check Teams for urgent messages about new bugs"
 # Ralph uses teams-SearchTeamsMessages with query 'urgent OR critical'
 # Adjusts triage priority based on what it finds
-\\\
+```
 
 ### 3. Email Watchers (Outlook COM Automation)
 
 For local machines with Outlook installed, use the **outlook-automation** skill:
 
-\\\ash
+```ash
 # In .squad/config.json
 {
   "integrations": {
@@ -1166,7 +1166,7 @@ For local machines with Outlook installed, use the **outlook-automation** skill:
     }
   }
 }
-\\\
+```
 
 **Ralph can:**
 - Read emails with "squad:" in subject
@@ -1184,7 +1184,7 @@ For local machines with Outlook installed, use the **outlook-automation** skill:
 
 **Setup in \.squad/config.json\:**
 
-\\\json
+```json
 {
   "workiq": {
     "enabled": true,
@@ -1196,7 +1196,7 @@ For local machines with Outlook installed, use the **outlook-automation** skill:
     }
   }
 }
-\\\
+```
 
 **Ralph's workflow:**
 1. Runs heartbeat (checks GitHub issues)
@@ -1230,18 +1230,18 @@ For always-on Squad infrastructure without a local machine:
 
 **Via Azure CLI:**
 
-\\\ash
+```ash
 az devcenter dev environment create \
   --project-name my-project \
   --environment-type my-env \
   --environment-name squad-devbox
-\\\
+```
 
 ### 3. Cloning Your Repo
 
 Once connected to DevBox:
 
-\\\ash
+```ash
 # On DevBox terminal (PowerShell or bash)
 git clone https://github.com/owner/repo.git
 cd repo
@@ -1249,23 +1249,23 @@ cd repo
 # Authenticate with GitHub
 gh auth login
 # (Follow prompts, paste device code into browser)
-\\\
+```
 
 ### 4. Installing Copilot CLI on DevBox
 
-\\\ash
+```ash
 # On DevBox
 npm install -g @bradygaster/squad-cli
 
 # Verify
 squad doctor
-\\\
+```
 
 ### 5. Running Ralph Persistently
 
 Ralph watches for work 24/7:
 
-\\\ash
+```ash
 # Create a PowerShell script: run-ralph-persistent.ps1
 \Continue = 'Continue'
 \ = "\C:\Users\tamirdresher/.squad/ralph-persistent.log"
@@ -1285,23 +1285,23 @@ while (\True) {
     Start-Sleep -Seconds 60
   }
 }
-\\\
+```
 
 **Run as detached process:**
 
-\\\ash
+```ash
 # On DevBox, run once and let it persist
 Start-Process powershell -ArgumentList "-File run-ralph-persistent.ps1" -NoNewWindow
 
 # Or via scheduler (Windows Task Scheduler):
 # New-ScheduledTask -TaskName "Squad Ralph" -Action \ -Trigger \
-\\\
+```
 
 **Prevent DevBox from sleeping:**
 
 On Windows, enable **PowerToys Awake**:
 
-\\\powershell
+```powershell
 # Download PowerToys Installer
 # https://github.com/microsoft/PowerToys/releases
 
@@ -1309,26 +1309,26 @@ On Windows, enable **PowerToys Awake**:
 winget install Microsoft.PowerToys
 
 # Start Awake module: Settings → Awake → keep awake indefinitely
-\\\
+```
 
 ### 6. devtunnel for External Access
 
 If you want to access Squad outputs from your dev machine:
 
-\\\ash
+```ash
 # On DevBox, forward a port
 devtunnel host -p 3000 --allow-anonymous
 
 # On your machine, open the tunnel
 devtunnel connect
 # Access output at https://<random>.devtunnels.ms
-\\\
+```
 
 ### 7. Cross-Machine Coordination
 
 Squad works across multiple machines via a **Git-based task queue**:
 
-\\\
+```
 .squad/
   ├── cross-machine/
   │   └── tasks/
@@ -1336,16 +1336,16 @@ Squad works across multiple machines via a **Git-based task queue**:
   │       ├── task-002-iss-43-devbox.md
   │       └── task-003-iss-44-unclaimed.md
   └── decisions.md
-\\\
+```
 
 **How it works:**
 
 1. **Claim a task:**
-   \\\ash
+   ```ash
    # Ralph on DevBox sees unclaimed task
    gh issue edit #42 --add-assignee "squad-devbox"
    # (or sets a label squad:devbox)
-   \\\
+   ```
 
 2. **Work on it:**
    - Branch: \squad/42-fix-auth-devbox\
@@ -1362,7 +1362,7 @@ Squad works across multiple machines via a **Git-based task queue**:
 
 ### 1. The Complete Notification Flow
 
-\\\
+```
 ┌─────────────────────────────────────────────────────────────┐
 │ Agent Completes Work (e.g., Ralph triages issue #42)        │
 └──────────────────┬──────────────────────────────────────────┘
@@ -1399,13 +1399,13 @@ Squad works across multiple machines via a **Git-based task queue**:
    │ Channel  │         │ Inbox    │
    │ Alert    │         │ Received │
    └──────────┘         └──────────┘
-\\\
+```
 
 ### 2. Setting Up Multiple Webhooks by Severity
 
 Different channels for different alert types:
 
-\\\json
+```json
 {
   "teams": {
     "webhooks": {
@@ -1424,11 +1424,11 @@ Different channels for different alert types:
     }
   }
 }
-\\\
+```
 
 **Example: Ralph decides which webhook**
 
-\\\ash
+```ash
 PRIORITY=\
 
 if [[ "\" == "priority:critical" ]]; then
@@ -1440,13 +1440,13 @@ else
 fi
 
 curl -X POST "\" -H "Content-Type: application/json" -d '{...}'
-\\\
+```
 
 ### 3. Email Notifications as Fallback
 
 If Teams is down, send email:
 
-\\\ash
+```ash
 # In Ralph's notification logic
 if ! curl -f "\" -X POST ... 2>/dev/null; then
   # Teams webhook failed, fall back to email
@@ -1458,13 +1458,13 @@ if ! curl -f "\" -X POST ... 2>/dev/null; then
   \.Body = "Issue #42: Add user auth\nAssigned to: Data Team\nPriority: High"
   \.Send()
 fi
-\\\
+```
 
 ### 4. Adaptive Cards — Rich Format for Teams
 
 Teams notifications use **Adaptive Cards** for interactivity:
 
-\\\json
+```json
 {
   "\": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -1522,7 +1522,7 @@ Teams notifications use **Adaptive Cards** for interactivity:
     }
   ]
 }
-\\\
+```
 
 **Key benefits:**
 - One-click links to GitHub
