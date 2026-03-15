@@ -1,0 +1,13 @@
+{
+  "name": "github-multi-account",
+  "version": "1.0.0",
+  "description": "Solve GitHub multi-account switching chaos with account-locked CLI aliases. Never run commands in the wrong account context again.",
+  "author": "tamirdresher",
+  "platforms": ["copilot-cli", "claude", "chatgpt", "any-agent"],
+  "triggers": ["gh auth switch", "wrong account", "multi account", "EMU", "personal account", "github account"],
+  "requires": {
+    "software": ["GitHub CLI (gh)"],
+    "runtime": "PowerShell or CMD"
+  },
+  "tags": ["github", "authentication", "multi-account", "EMU", "productivity", "agent-safety"]
+}
