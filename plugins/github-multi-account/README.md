@@ -31,7 +31,25 @@ ghp pr create --title "fix"      # personal, guaranteed
 ghw pr merge 42                  # work, guaranteed
 ```
 
-## Setup
+## One-Line Setup
+
+```powershell
+# Replace with YOUR GitHub usernames:
+irm https://raw.githubusercontent.com/tamirdresher/squad-skills/main/plugins/github-multi-account/setup.ps1 -OutFile setup.ps1; pwsh setup.ps1 -Personal YOUR_PERSONAL -Work YOUR_WORK; rm setup.ps1
+```
+
+Or if you already cloned the repo:
+```powershell
+pwsh plugins/github-multi-account/setup.ps1 -Personal myuser -Work myuser_microsoft
+```
+
+This automatically:
+- Adds `ghp`/`ghw` functions to your PowerShell profile
+- Creates CMD wrappers in `~/.squad/bin/` (added to PATH)
+- Installs the SKILL.md to your repo's `.squad/skills/`
+- Loads everything in the current session
+
+## Manual Setup (if you prefer)
 
 1. Add the functions to your PowerShell profile (`$PROFILE.CurrentUserAllHosts`)
 2. Replace `YOUR_PERSONAL_ACCOUNT` and `YOUR_WORK_ACCOUNT` with your actual GitHub usernames
@@ -47,3 +65,4 @@ Add `SKILL.md` to your `.squad/skills/github-multi-account/` directory. Every ag
 - "wrong account", "auth switch", "EMU account"
 - "push to personal repo", "create issue on work repo"
 - Any GitHub operation targeting a specific account's repos
+
