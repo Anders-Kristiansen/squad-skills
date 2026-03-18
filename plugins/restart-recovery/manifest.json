@@ -1,0 +1,13 @@
+{
+  "name": "restart-recovery",
+  "version": "1.0.0",
+  "description": "Snapshot and restore full dev environment after machine restart",
+  "platforms": ["copilot", "squad", "any"],
+  "triggers": ["restart recovery", "recover from restart", "snapshot before restart", "recover after restart"],
+  "author": "Squad",
+  "license": "MIT",
+  "files": {
+    "skill": "SKILL.md",
+    "scripts": ["scripts/recover-from-restart.ps1", "scripts/recover-from-restart.sh"]
+  }
+}

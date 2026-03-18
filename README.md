@@ -36,8 +36,10 @@ Each plugin is a self-contained `SKILL.md` — structured markdown that any AI a
 | [📧 outlook-automation](plugins/outlook-automation/) | Control Outlook on Windows — send emails, create meetings, search inbox, manage tasks | `create meeting`, `send email`, `search emails`, `outlook` |
 | [📰 news-broadcasting](plugins/news-broadcasting/) | Tech news scanning, compilation, and delivery to team channels | `news`, `tech news`, `daily briefing`, `news report`, `scan news` |
 | [✅ fact-checking](plugins/fact-checking/) | Agent fact-verification patterns for ensuring accuracy before publishing | `fact check`, `verify`, `validate claims`, `source check` |
-| [🔄 reflect](plugins/reflect/) |
-| [🔀 github-multi-account](plugins/github-multi-account/) | Solve multi-account GitHub CLI chaos with account-locked aliases | `gh auth switch`, `wrong account`, `multi account`, `EMU` | Agent self-reflection and continuous improvement patterns | `reflect`, `retrospective`, `self-improve`, `lessons learned`, `what went wrong` |
+| [🔄 session-recovery](plugins/session-recovery/) | Find and resume individual past Copilot CLI sessions from session_store | `session recovery`, `find session`, `resume session` |
+| [🔄 restart-recovery](plugins/restart-recovery/) | Snapshot and restore full dev environment (services, sessions, state) after machine restart | `restart recovery`, `recover from restart`, `snapshot before restart` |
+| [🔄 reflect](plugins/reflect/) | Agent self-reflection and continuous improvement patterns | `reflect`, `retrospective`, `self-improve`, `lessons learned`, `what went wrong` |
+| [🔀 github-multi-account](plugins/github-multi-account/) | Solve multi-account GitHub CLI chaos with account-locked aliases | `gh auth switch`, `wrong account`, `multi account`, `EMU` |
 
 ---
 
