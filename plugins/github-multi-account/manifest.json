@@ -1,13 +1,35 @@
 {
   "name": "github-multi-account",
-  "version": "1.0.0",
-  "description": "Solve GitHub multi-account switching chaos with account-locked CLI aliases. Never run commands in the wrong account context again.",
+  "version": "2.0.0",
+  "description": "Transparent gh CLI proxy that auto-routes commands to the correct GitHub account based on repo context. Uses GH_CONFIG_DIR isolation with auto-detection, token health monitoring, and git credential integration.",
   "author": "tamirdresher",
   "platforms": ["copilot-cli", "claude", "chatgpt", "any-agent"],
-  "triggers": ["gh auth switch", "wrong account", "multi account", "EMU", "personal account", "github account"],
+  "triggers": [
+    "gh auth switch",
+    "wrong account",
+    "multi account",
+    "EMU",
+    "personal account",
+    "github account",
+    "token expired",
+    "token health",
+    "gh proxy"
+  ],
   "requires": {
-    "software": ["GitHub CLI (gh)"],
-    "runtime": "PowerShell or CMD"
+    "software": ["GitHub CLI (gh)", "Git"],
+    "runtime": "PowerShell 7+",
+    "config": "GH_CONFIG_DIR isolation (gh-emu + gh-public dirs)"
   },
-  "tags": ["github", "authentication", "multi-account", "EMU", "productivity", "agent-safety"]
+  "files": {
+    "SKILL.md": "AI skill document — agents read this to understand the proxy",
+    "README.md": "Human-readable overview and install instructions",
+    "gh-proxy.ps1": "Transparent gh function, routing table, and token health monitor",
+    "setup.ps1": "One-time setup: installs proxy to $PROFILE, configures git credential helper",
+    "manifest.json": "This file — plugin metadata"
+  },
+  "changelog": {
+    "2.0.0": "Replaced gh auth switch aliases with transparent GH_CONFIG_DIR proxy. Added token health monitor (Test-GhTokenHealth, Repair-GhToken). Added git credential helper integration. Based on Picard's Decision: GH Auth Proxy.",
+    "1.0.0": "Initial release with gh auth switch aliases (ghp/ghw)"
+  },
+  "tags": ["github", "authentication", "multi-account", "EMU", "productivity", "agent-safety", "proxy", "GH_CONFIG_DIR"]
 }
